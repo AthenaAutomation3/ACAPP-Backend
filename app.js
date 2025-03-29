@@ -156,16 +156,16 @@ app.post("/login", (req, res) => {
  if (req.body.username == "admin" && req.body.password == "admin") {
  res.send({ success: true, session: "DJ06QPIFTAK4AWXB229J" ,role:"admin"});
  }
- else if (req.body.username == "Anand" && req.body.password == "Anand") {
+ else if (req.body.username == "Omkar" && req.body.password == "Omkar") {
  res.send({ success: true, session: "DJ06QPIFTAK4AWXB229A" ,role:"operator"});
  }
- else if (req.body.username == "Akshay" && req.body.password == "Akshay") {
+ else if (req.body.username == "Shravani" && req.body.password == "Shravani") {
  res.send({ success: true, session: "DJ06QPIFTAK4AWXB229B" ,role:"operator"});
  }
- else if (req.body.username == "Bhima" && req.body.password == "Bhima") {
+ else if (req.body.username == "Prathmesh" && req.body.password == "Prathmesh") {
  res.send({ success: true, session: "DJ06QPIFTAK4AWXB229C" ,role:"operator"});
  }
- else if (req.body.username == "Satish" && req.body.password == "Satish") {
+ else if (req.body.username == "Pratik" && req.body.password == "Pratik") {
  res.send({ success: true, session: "DJ06QPIFTAK4AWXB229D" ,role:"operator"});
  }
  else {res.send({ success: false });}
@@ -667,12 +667,11 @@ const checkFlag = () => {
  return;
  }
  const fieldData = fieldResults.reduce((acc, item) => {
- acc[item.field_name] = item.value;
+ acc[item.field_name] = item.Value;
  return acc;
  }, {});
+           console.log("Processed fieldData:", fieldData); 
 
-<<<<<<< HEAD
-          //  console.log("Processed fieldData:", fieldData); 
             
             const latestReason=fieldData["Reason"];
             if(previousreason!==null && latestReason!==previousreason){
@@ -684,20 +683,19 @@ const checkFlag = () => {
             });
             }
             previousreason=latestReason;
-=======
-// console.log("Processed fieldData:", fieldData); 
+
  
- const latestReason=fieldData["Reason"];
- if(previousreason!==null && latestReason!==previousreason){
- const message=`Reason is : ${latestReason}`
- clients.forEach((client) => {
- if (client.readyState === WebSocket.OPEN) {
- client.send(JSON.stringify(message));
- } 
- });
- }
- previousreason=latestReason;
->>>>>>> bd18a8adf0fc9be30a68fa90b38aa7a67a9a692e
+//  const latestReason=fieldData["Reason"];
+//  if(previousreason!==null && latestReason!==previousreason){
+//  const message=`Reason is : ${latestReason}`
+//  clients.forEach((client) => {
+//  if (client.readyState === WebSocket.OPEN) {
+//  client.send(JSON.stringify(message));
+//  } 
+//  });
+//  }
+//  previousreason=latestReason;
+
 
  connection.query("SELECT ID_Reading FROM Readings ORDER BY ID DESC LIMIT 1", (error, readingResults) => {
  if (error) {
@@ -705,8 +703,6 @@ const checkFlag = () => {
  return;
  }
 
-
-<<<<<<< HEAD
             const latestReading = readingResults.length > 0 ? readingResults[0].ID_Reading : null;
             
             const result = {
@@ -714,15 +710,7 @@ const checkFlag = () => {
             ID_Reading: latestReading // Include the latest reading
             };
             // console.log(result);
-=======
- const latestReading = readingResults.length > 0 ? readingResults[0].ID_Reading : null;
- 
- const result = {
- ...fieldData, // Include all field data
- ID_Reading: latestReading // Include the latest reading
- };
-  //  console.log(result);
->>>>>>> bd18a8adf0fc9be30a68fa90b38aa7a67a9a692e
+
 
  // console.log("Results from DB:", results);
 
