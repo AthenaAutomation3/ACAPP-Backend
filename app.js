@@ -156,16 +156,16 @@ app.post("/login", (req, res) => {
  if (req.body.username == "admin" && req.body.password == "admin") {
  res.send({ success: true, session: "DJ06QPIFTAK4AWXB229J" ,role:"admin"});
  }
- else if (req.body.username == "Omkar" && req.body.password == "Omkar") {
+ else if (req.body.username == "Anand" && req.body.password == "Anand") {
  res.send({ success: true, session: "DJ06QPIFTAK4AWXB229A" ,role:"operator"});
  }
- else if (req.body.username == "Shravani" && req.body.password == "Shravani") {
+ else if (req.body.username == "Akshay" && req.body.password == "Akshay") {
  res.send({ success: true, session: "DJ06QPIFTAK4AWXB229B" ,role:"operator"});
  }
- else if (req.body.username == "Prathmesh" && req.body.password == "Prathmesh") {
+ else if (req.body.username == "Bhima" && req.body.password == "Bhima") {
  res.send({ success: true, session: "DJ06QPIFTAK4AWXB229C" ,role:"operator"});
  }
- else if (req.body.username == "Pratik" && req.body.password == "Pratik") {
+ else if (req.body.username == "Satish" && req.body.password == "Satish") {
  res.send({ success: true, session: "DJ06QPIFTAK4AWXB229D" ,role:"operator"});
  }
  else {res.send({ success: false });}
@@ -671,7 +671,7 @@ const checkFlag = () => {
             return acc;
             }, {});
 
-           console.log("Processed fieldData:", fieldData); 
+          //  console.log("Processed fieldData:", fieldData); 
             
             const latestReason=fieldData["Reason"];
             if(previousreason!==null && latestReason!==previousreason){
@@ -697,7 +697,7 @@ const checkFlag = () => {
             ...fieldData, // Include all field data
             ID_Reading: latestReading // Include the latest reading
             };
-            console.log(result);
+            // console.log(result);
 
             // console.log("Results from DB:", results);
 
