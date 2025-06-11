@@ -6,14 +6,10 @@ import morgan from "morgan";
 import { default as expressWs } from "express-ws";
 import WebSocket from "ws";
 
-// express-app/app.js
-
-// import submitFormRouter from './app/api/submitform.js';
-// import signupRouter from './app/api/signup.js';
-// console.log = function () {}; // Disables all console.log statements
 const app = express();
 const ws = expressWs(app);
 const clients = new Set();
+let previousState = null;
 // const wss = new WebSocket('ws://localhost:3006');
 
 // Middleware to parse JSON and URL-encoded bodies
@@ -226,6 +222,7 @@ app.get("/Index", (req, res) => {
 // });
 // });
 
+//roughing insert
 app.get("/Tool2", (req, res) => {
  console.log("updating")
  const sql = 'UPDATE Fields SET value = "True" WHERE field_name = "RoughingInsert"';
@@ -239,79 +236,73 @@ app.get("/Tool2", (req, res) => {
  });
  console.log("finished")
 });
+
 app.get("/updateTool2", (req, res) => {
- console.log("Updating TOOL2 and RoughingInsert...");
-
- const updateTool2 = `UPDATE Fields SET value = "False" WHERE field_name = "TOOL2"`;
-// const updateRoughingInsert = `UPDATE Fields SET value = "True" WHERE field_name = "RoughingInsert"`;
-
- connection.query(updateTool2, (err, result1) => {
- if (err) {
- console.error("Failed to update TOOL2:", err.message);
- return res.status(500).send("Failed to update TOOL2");
- }
-
-// connection.query(updateRoughingInsert, (err, result2) => {
-// if (err) {
-// console.error("Failed to update RoughingInsert:", err.message);
-// return res.status(500).send("Failed to update RoughingInsert");
-// }
-// });
- res.status(200).send({ message: "Tool2 updated successfully" });
- });
+  console.log("Updating TOOL2 and RoughingInsert...");
+  const updateTool2 = `UPDATE Fields SET value = "False" WHERE field_name = "TOOL2"`;
+  connection.query(updateTool2, (err, result1) => {
+    if (err) {
+      console.error("Failed to update TOOL2:", err.message);
+      return res.status(500).send("Failed to update TOOL2");
+    }
+    res.status(200).send({ message: "Tool2 updated successfully" });
+  });
 });
-
 
 app.get("/updateTool3", (req, res) => {
- console.log("Updating TOOL3 and RoughingInsert...");
-
- const updateTool3 = `UPDATE Fields SET value = "False" WHERE field_name = "TOOL3"`;
-// const updateSemiFinish = `UPDATE Fields SET value = "True" WHERE field_name = "SemiFinish"`;
-
- connection.query(updateTool3, (err, result1) => {
- if (err) {
- console.error("Failed to update TOOL3:", err.message);
- return res.status(500).send("Failed to update TOOL3");
- }
-
-// connection.query(updateSemiFinish, (err, result2) => {
-// if (err) {
-// console.error("Failed to update RoughingInsert:", err.message);
-// return res.status(500).send("Failed to update RoughingInsert");
-// }
-
- 
-// });
- console.log("Finished updating TOOL3 and SemiFinish.");
- res.status(200).send({ message: "Tool3 and SemiFinish updated successfully" });
- });
+  console.log("Updating TOOL3 and RoughingInsert...");
+  const updateTool3 = `UPDATE Fields SET value = "False" WHERE field_name = "TOOL3"`;
+  connection.query(updateTool3, (err, result1) => {
+    if (err) {
+      console.error("Failed to update TOOL3:", err.message);
+      return res.status(500).send("Failed to update TOOL3");
+    }
+    console.log("Finished updating TOOL3 and SemiFinish.");
+    res.status(200).send({ message: "Tool3 and SemiFinish updated successfully" });
+  });
 });
-
 
 app.get("/updateTool8", (req, res) => {
- console.log("Updating TOOL8 and INSERT_INDEXING...");
-
- const updateTool8 = `UPDATE Fields SET value = "False" WHERE field_name = "TOOL8"`;
-// const updateINSERTINDEXING = `UPDATE Fields SET value = "True" WHERE field_name = "INSERT_INDEXING"`;
-
- connection.query(updateTool8, (err, result1) => {
- if (err) {
- console.error("Failed to update TOOL8:", err.message);
- return res.status(500).send("Failed to update TOOL8");
- }
-
-// connection.query(updateINSERTINDEXING, (err, result2) => {
-// if (err) {
-// console.error("Failed to update INSERTINDEXING:", err.message);
-// return res.status(500).send("Failed to update NSERTINDEXING");
-// }
-
- 
-// });
- console.log("Finished updating TOOL8 and INSERTINDEXING.");
- res.status(200).send({ message: "Tool8 and INSERTINDEXING updated successfully" });
- });
+  console.log("Updating TOOL8 and INSERT_INDEXING...");
+  const updateTool8 = `UPDATE Fields SET value = "False" WHERE field_name = "TOOL8"`;
+  connection.query(updateTool8, (err, result1) => {
+    if (err) {
+      console.error("Failed to update TOOL8:", err.message);
+      return res.status(500).send("Failed to update TOOL8");
+    }
+    console.log("Finished updating TOOL8 and INSERTINDEXING.");
+    res.status(200).send({ message: "Tool8 and INSERTINDEXING updated successfully" });
+  });
 });
+
+// Set Restart = False
+app.get("/updateRestart", (req, res) => {
+  console.log("Updating Restart...");
+  const sql = 'UPDATE Fields SET value = "False" WHERE field_name = "Restart"';
+  connection.query(sql, (err, results) => {
+    if (err) {
+      console.error("Failed to update Restart:", err.message);
+      return res.status(500).send("Failed to update Restart");
+    }
+    console.log("Finished updating Restart.");
+    res.status(200).send({ message: "Restart updated successfully" });
+  });
+});
+
+// // Set Check_Finish = False (update route)
+// app.get("/updateCheck_Finish", (req, res) => {
+//   console.log("Updating Check_Finish to False...");
+//   const sql = 'UPDATE Fields SET value = "False" WHERE field_name = "Check_Finish"';
+//   connection.query(sql, (err, results) => {
+//     if (err) {
+//       console.error("Failed to update Check_Finish:", err.message);
+//       return res.status(500).send("Failed to update Check_Finish");
+//     }
+//     console.log("Finished updating Check_Finish.");
+//     res.status(200).send({ message: "Check_Finish updated successfully" });
+//   });
+// });
+
 
 app.get("/stillokTool2", (req, res) => {
  const sql = 'UPDATE Fields SET value = "False" WHERE field_name = "TOOL2"';
@@ -347,6 +338,30 @@ app.get("/stillokTool8", (req, res) => {
  });
 });
 
+// Still OK = False
+app.get("/stillokRestart", (req, res) => {
+  const sql = 'UPDATE Fields SET value = "False" WHERE field_name = "Restart"';
+  connection.query(sql, (err, results) => {
+    if (err) {
+      console.error("Database update failed for Restart:", err.message);
+      return res.status(505).send("Database update failed for Restart");
+    }
+    res.status(200).send({ message: "Restart set to False", results });
+  });
+});
+
+// // Set Check_Finish = False (stillok route)
+// app.get("/stillokCheck_Finish", (req, res) => {
+//   const sql = 'UPDATE Fields SET value = "False" WHERE field_name = "Check_Finish"';
+//   connection.query(sql, (err, results) => {
+//     if (err) {
+//       console.error("Database update failed for Check_Finish:", err.message);
+//       return res.status(505).send("Database update failed for Check_Finish");
+//     }
+//     res.status(200).send({ message: "Check_Finish set to False", results });
+//   });
+// });
+
 app.get("/reasonupdate", (req, res) => {
  const sql = 'UPDATE Fields SET value = "False" WHERE field_name = "Reason"';
  connection.query(sql, (err, results) => {
@@ -372,7 +387,7 @@ app.get("/Tool2value", (req, res) => {
  console.log("finished")
 });
 
-
+//semi-finish
 app.get("/Tool3", (req, res) => {
  const sql = 'UPDATE Fields SET value = "True" WHERE field_name = "SemiFinish"';
  connection.query(sql, (err, results) => {
@@ -384,6 +399,7 @@ app.get("/Tool3", (req, res) => {
  });
 });
 
+//insert-indexing
 app.get("/Tool8", (req, res) => {
  const sql = 'UPDATE Fields SET value = "True" WHERE field_name = "INSERT_INDEXING"';
  connection.query(sql, (err, results) => {
@@ -394,6 +410,39 @@ app.get("/Tool8", (req, res) => {
  res.status(200).send({ results });
  });
 });
+
+
+/**
+ * Route: /Restart
+ * Action: Set the value of "Restart" to "True"
+ */
+app.get("/Restart", (req, res) => {
+  console.log("Updating Restart to True...");
+  const sql = 'UPDATE Fields SET value = "True" WHERE field_name = "Restart"';
+  connection.query(sql, (err, results) => {
+    if (err) {
+      console.error("Failed to update Restart:", err.message);
+      return res.status(505).send("Failed to update Restart");
+    }
+    console.log("Finished updating Restart.");
+    res.status(200).send({ message: "Restart set to True", results });
+  });
+});
+
+// // Set Check_Finish = True
+// app.get("/Check_Finish", (req, res) => {
+//   console.log("Updating Check_Finish to True...");
+//   const sql = 'UPDATE Fields SET value = "True" WHERE field_name = "Check_Finish"';
+//   connection.query(sql, (err, results) => {
+//     if (err) {
+//       console.error("Failed to update Check_Finish:", err.message);
+//       return res.status(505).send("Failed to update Check_Finish");
+//     }
+//     console.log("Finished updating Check_Finish.");
+//     res.status(200).send({ message: "Check_Finish set to True", results });
+//   });
+// });
+
 
 app.get("/Toolsvalue", (req, res) => {
  const sql = 'SELECT field_name AS name, value FROM Fields WHERE field_name IN ("TOOL2", "TOOL3", "TOOL8")';
@@ -408,6 +457,19 @@ app.get("/Toolsvalue", (req, res) => {
  });
 });
 
+// // Get Check_Finish value
+// app.get("/Check_Finishvalue", (req, res) => {
+//   const sql = 'SELECT * FROM Fields WHERE field_name = "Check_Finish"';
+//   connection.query(sql, (err, results) => {
+//     if (err) {
+//       console.error("Failed to fetch Check_Finish value:", err.message);
+//       return res.status(500).send("Fetch failed");
+//     }
+//     res.status(200).send(results);
+//   });
+// });
+
+
 app.get("/usllsl", (req, res) => {
  const sql = "SELECT Feature, USL, LSL FROM Df"; 
  connection.query(sql, (err, result) => {
@@ -418,6 +480,17 @@ app.get("/usllsl", (req, res) => {
  res.json({ results: result });
  });
 });
+
+app.get("/newusllsl", (req, res) => {
+  const sql = "SELECT ID, USL, LSL, Mean, USL_controlled, LSL_controlled from Limits ";
+  connection.query(sql, (err, result) => {
+    if(err){
+      return res.status(500).json({error: "Database query failed"});
+    }
+
+    res.json({result: result});
+  })
+})
 
 app.get("/fetchReason", (req, res) => {
  const sql = "SELECT Value from Fields where field_name='Reason';"; 
@@ -595,164 +668,134 @@ app.get("/extremeshift", (req, res) => {
 
 
 app.get("/Setup", (req, res) => {
- const sql = `
- UPDATE Fields 
- SET value = 'True' 
- WHERE field_name = 'SETUP';
+  const sql = `
+    UPDATE Fields 
+    SET value = 'True' 
+    WHERE field_name = 'SETUP';
 
- UPDATE Fields 
- SET value = 'False' 
- WHERE field_name = 'CALIBRATION';
+    UPDATE Fields 
+    SET value = 'False' 
+    WHERE field_name = 'CALIBRATION';
 
- UPDATE Fields 
- SET value = 'False' 
- WHERE field_name IN ('LOW', 'HIGH', 'MEDIUM', 'ZERO', 'START');
- `;
- connection.query(sql, (err, results) => {
- if (err) {
- console.error("Database test query failed:", err.message);
- return res.status(505).send("Database test query failed");
- }
- res.status(200).send({ results });
- });
+    UPDATE Fields 
+    SET value = 'False' 
+    WHERE field_name IN ('LOW', 'HIGH', 'MEDIUM', 'ZERO', 'START');
+  `;
+  connection.query(sql, (err, results) => {
+    if (err) {
+      console.error("Database test query failed:", err.message);
+      return res.status(505).send("Database test query failed");
+    }
+    res.status(200).send({ results });
+  });
 });
 
 
 app.get("/Calibration", (req, res) => {
- const sql = `
- UPDATE Fields 
- SET value = "True" 
- WHERE field_name = "CALIBRATION";
- 
- UPDATE Fields 
- SET value = "False" 
- WHERE field_name = "SETUP";
- `;
- connection.query(sql, (err, results) => {
- if (err) {
- console.error("Database test query failed:", err.message);
- return res.status(505).send("Database test query failed");
- }
- res.status(200).send({ results });
- });
+  const sql = `
+    UPDATE Fields 
+    SET value = "True" 
+    WHERE field_name = "CALIBRATION";
+    
+    UPDATE Fields 
+    SET value = "False" 
+    WHERE field_name = "SETUP";
+  `;
+  connection.query(sql, (err, results) => {
+    if (err) {
+      console.error("Database test query failed:", err.message);
+      return res.status(505).send("Database test query failed");
+    }
+    res.status(200).send({ results });
+  });
 });
 
 app.get("/BP", (req, res) => {
- const sql = `UPDATE Fields SET value = "True" WHERE field_name = "BP";`;
- connection.query(sql, (err, results) => {
- if (err) {
- console.error("Database test query failed:", err.message);
- return res.status(505).send("Database test query failed");
- }
- res.status(200).send({ results });
- });
+  const sql = `UPDATE Fields SET value = "True" WHERE field_name = "BP";`;
+  connection.query(sql, (err, results) => {
+    if (err) {
+      console.error("Database test query failed:", err.message);
+      return res.status(505).send("Database test query failed");
+    }
+    res.status(200).send({ results });
+  });
 });
 
 app.get("/Home", (req, res) => {
- const sql = `UPDATE Fields SET value = "False" WHERE field_name = "CALIBRATION"; 
- UPDATE Fields SET value = "False" WHERE field_name = "SETUP";`;
- connection.query(sql, (err, results) => {
- if (err) {
- console.error("Database test query failed:", err.message);
- return res.status(505).send("Database test query failed");
- }
- res.status(200).send({ results });
- });
+  const sql = `
+    UPDATE Fields SET value = "False" WHERE field_name = "CALIBRATION"; 
+    UPDATE Fields SET value = "False" WHERE field_name = "SETUP";
+  `;
+  connection.query(sql, (err, results) => {
+    if (err) {
+      console.error("Database test query failed:", err.message);
+      return res.status(505).send("Database test query failed");
+    }
+    res.status(200).send({ results });
+  });
 });
-let previousreason=null;
+
 const checkFlag = () => {
- connection.query("SELECT * FROM Fields", (error, fieldResults) => {
- if (error) {
- console.error("Error querying database:", error);
- return;
- }
- const fieldData = fieldResults.reduce((acc, item) => {
- acc[item.field_name] = item.Value;
- return acc;
- }, {});
-           console.log("Processed fieldData:", fieldData); 
+  connection.query("SELECT * FROM Fields", (error, fieldResults) => {
+    if (error) {
+      console.error("Error querying database:", error);
+      return;
+    }
+    const fieldData = fieldResults.reduce((acc, item) => {
+      acc[item.field_name] = item.Value;
+      return acc;
+    }, {});
 
-            
-            const latestReason=fieldData["Reason"];
-            if(previousreason!==null && latestReason!==previousreason){
-            const message=`Reason is : ${latestReason}`
-            clients.forEach((client) => {
-            if (client.readyState === WebSocket.OPEN) {
-            client.send(JSON.stringify(message));
-            } 
-            });
-            }
-            previousreason=latestReason;
+    // Get the latest reading
+    connection.query("SELECT ID_Reading FROM Readings ORDER BY ID DESC LIMIT 1", (error, readingResults) => {
+      if (error) {
+        console.error("Error querying Readings table:", error);
+        return;
+      }
 
- 
-//  const latestReason=fieldData["Reason"];
-//  if(previousreason!==null && latestReason!==previousreason){
-//  const message=`Reason is : ${latestReason}`
-//  clients.forEach((client) => {
-//  if (client.readyState === WebSocket.OPEN) {
-//  client.send(JSON.stringify(message));
-//  } 
-//  });
-//  }
-//  previousreason=latestReason;
+      const latestReading = readingResults.length > 0 ? readingResults[0].ID_Reading : null;
+      const currentState = {
+        ...fieldData,
+        ID_Reading: latestReading
+      };
 
-
- connection.query("SELECT ID_Reading FROM Readings ORDER BY ID DESC LIMIT 1", (error, readingResults) => {
- if (error) {
- console.error("Error querying Readings table:", error);
- return;
- }
-
-            const latestReading = readingResults.length > 0 ? readingResults[0].ID_Reading : null;
-            
-            const result = {
-            ...fieldData, // Include all field data
-            ID_Reading: latestReading // Include the latest reading
-            };
-            // console.log(result);
-
-
- // console.log("Results from DB:", results);
-
- clients.forEach((client) => {
- if (client.readyState === WebSocket.OPEN) {
- client.send(JSON.stringify(result));
- } 
- });
- });
- });
+      // Only send if state has changed
+      if (JSON.stringify(currentState) !== JSON.stringify(previousState)) {
+        previousState = currentState;
+        // Send the complete state to all connected clients
+        clients.forEach((client) => {
+          if (client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify(currentState));
+          }
+        });
+      }
+    });
+  });
 };
 
+// Reduce the check interval to 2000ms to prevent too frequent updates
+setInterval(checkFlag, 2000);
 
-// Periodically check the flag every 5 seconds
-setInterval(checkFlag, 500);
 app.ws("/ws", (ws, req) => {
- 
+  clients.add(ws);
+  
+  // Send initial state when client connects
+  checkFlag();
 
- clients.add(ws);
- checkFlag();
+  ws.on("message", (msg) => {
+    console.log("Received message from client:", msg);
+  });
 
- ws.on("message", (msg) => {
- console.log("Received message from client:", msg);
- checkFlag();
- });
+  ws.on("close", () => {
+    clients.delete(ws);
+  });
 
- ws.on("close", () => {
- 
- clients.delete(ws);
- });
-
- ws.send(JSON.stringify({ message: "Connected to WebSocket server!" }));
+  ws.send(JSON.stringify({ message: "Connected to WebSocket server!" }));
 });
 
-
-
-
-// Start the server
-const port = 3006; // Choose a port number
+const port = 3006;
 app.listen(port, () => {
- console.log(`Server running on port ${port}`);
+  console.log(`Server running on port ${port}`);
 });
-
 
 export default app;
